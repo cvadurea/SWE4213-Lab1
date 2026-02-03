@@ -7,7 +7,7 @@ import ContactModal from './components/ContactModal'
 import Listings from './components/Listings' // 1. Import the new component
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [selectedItem, setSelectedItem] = useState(null);
   const [myListings, setMyListings] = useState(false);
 
