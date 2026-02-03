@@ -17,6 +17,23 @@ router.post("/auth/register", async (req, res) => {
         });
     }
 
+    if(password.length < 8) {
+        return res.status(403).json({
+            message: "Password must be at least 8 characters long."
+        });
+    }
+    if(!password.match(/[1-9]/)) {
+        return res.status(403).json({
+            message: "Password must contain at least one number."
+        });
+    }
+    if(!password.match(/[@$!%*?&]/)) {
+        return res.status(403).json({
+            message: "Password must contain at least one special character (@$!%*?&)."
+        });
+    }
+
+
     try {
         // 1. Check if user already exists
         const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
@@ -43,6 +60,12 @@ router.post("/auth/register", async (req, res) => {
 router.post("/auth/login", async (req, res) => {
     const pool = req.app.get('db');
     const { email, password } = req.body;
+
+    // if (!email.toLowerCase().endsWith("@unb.ca")) {
+    //     return res.status(403).json({
+    //         message: "Login is only available for UNB students (@unb.ca)."
+    //     });
+    // }
 
     try {
         // 1. Find user by email

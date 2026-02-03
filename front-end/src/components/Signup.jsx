@@ -6,6 +6,8 @@ const Signup = ({ onBackToLogin }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const disabled = !name || !email || !password;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -77,7 +79,8 @@ const Signup = ({ onBackToLogin }) => {
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg transition-colors"
+                    disabled={disabled}
+                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg transition-colors disabled:opacity-50 disabled:bg-gray disabled:cursor-not-allowed"
                 >
                     Create Account
                 </button>
