@@ -1,8 +1,21 @@
 import React from 'react';
 
-const ItemCard = ({ image, title, price, onView }) => {
+const ItemCard = ({ image, title, price, onView, onDelete, productId }) => {
     return (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer group flex flex-col h-full">
+        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer group flex flex-col h-full relative">
+
+            {/* --- Delete Button --- */}
+            {onDelete && (
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(productId);
+                    }}
+                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white w-7 h-7 rounded-full flex items-center justify-center z-10 transition-colors"
+                >
+                    ×
+                </button>
+            )}
 
             {/* --- Product Image Section --- */}
             <div className="relative aspect-square w-full bg-slate-800 overflow-hidden">
@@ -18,7 +31,6 @@ const ItemCard = ({ image, title, price, onView }) => {
                 <h3 className="text-white font-medium text-base truncate mb-1">
                     {title}
                 </h3>
-
                 <div className="flex items-center justify-between mt-auto pt-1">
                     <span className="text-lg font-bold text-white">
                         ${price}

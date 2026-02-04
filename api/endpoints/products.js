@@ -48,4 +48,20 @@ router.post("/products", authcheck, async (req, res) => {
     }
 });
 
+router.delete("/products/:id", authcheck, async (req, res) => {
+    const pool = req.app.get('db');
+    try {
+        const userEmail = req.user.email;
+        const { id } = req.params;
+        const result = await pool.query(
+            "DELETE FROM products WHERE owner_email = $1 AND id = $2 RETURNING *",
+            [userEmail, id]
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Database error deleting your listing" });
+    }
+});
+
 module.exports = router;

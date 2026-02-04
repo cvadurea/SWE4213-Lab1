@@ -36,6 +36,28 @@ const Listings = ({ onSelectItem, myListings }) => {
         }
     };
 
+    const handleDeleteProduct = async (productId) => {
+        if (window.confirm('Are you sure you want to delete this listing?')) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/products/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Failed to delete product');
+                
+                fetchProducts(); // Refresh the list
+            } catch (err) {
+                console.error('Error deleting product:', err);
+                alert('Failed to delete listing');
+            }
+        }
+    };
+
     useEffect(() => {
         fetchProducts();
     }, [myListings]);
@@ -55,10 +77,12 @@ const Listings = ({ onSelectItem, myListings }) => {
                 {products.map((product) => (
                     <ItemCard
                         key={product.id}
+                        productId={product.id}
                         image={product.image_url || `https://picsum.photos/seed/${product.id}/400/400`}
                         title={product.title}
                         price={product.price}
                         onView={() => onSelectItem(product)}
+                        onDelete={myListings ? handleDeleteProduct : undefined}
                     />
                 ))}
 
