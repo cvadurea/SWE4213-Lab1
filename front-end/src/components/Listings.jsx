@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ItemCard from './ItemCard';
 import CreateListingModal from './CreateListingModal'; // Import your component
 
@@ -7,6 +7,7 @@ const Listings = ({ onSelectItem, myListings }) => {
     const [loading, setLoading] = useState(true);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [sortOption, setSortOption] = useState('');
 
     const fetchProducts = async () => {
         setLoading(true);
@@ -58,6 +59,33 @@ const Listings = ({ onSelectItem, myListings }) => {
         }
     };
 
+    const displayedProducts = useMemo(() => {
+        if (!products || !products.length) return products;
+
+        const arr = [...products];
+
+        switch (sortOption) {
+            case 'price-asc':
+                return arr.sort((a, b) => (Number(a.price) || 0) - (Number(b.price) || 0));
+            case 'price-desc':
+                return arr.sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+            case 'date-asc':
+                return arr.sort((a, b) => {
+                    const ta = a.created_at ? new Date(a.created_at).getTime() : (a.id || 0);
+                    const tb = b.created_at ? new Date(b.created_at).getTime() : (b.id || 0);
+                    return ta - tb;
+                });
+            case 'date-desc':
+                return arr.sort((a, b) => {
+                    const ta = a.created_at ? new Date(a.created_at).getTime() : (a.id || 0);
+                    const tb = b.created_at ? new Date(b.created_at).getTime() : (b.id || 0);
+                    return tb - ta;
+                });
+            default:
+                return arr;
+        }
+    }, [products, sortOption]);
+
     useEffect(() => {
         fetchProducts();
     }, [myListings]);
@@ -70,11 +98,26 @@ const Listings = ({ onSelectItem, myListings }) => {
                 <h1 className="text-2xl font-bold text-white">
                     {myListings ? "My Listings" : "Browse Listings"}
                 </h1>
+
+                <div className="flex items-center space-x-3">
+                    <p className="text-sm text-slate-400">Sort by:</p>
+                    <select
+                        value={sortOption}
+                        onChange={(e) => setSortOption(e.target.value)}
+                        className="bg-slate-800 text-white py-2 px-3 rounded-lg text-sm"
+                    >
+                        <option value="">Default</option>
+                        <option value="price-asc">Price: Low → High</option>
+                        <option value="price-desc">Price: High → Low</option>
+                        <option value="date-asc">Date: Oldest → Newest</option>
+                        <option value="date-desc">Date: Newest → Oldest</option>
+                    </select>
+                </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
 
-                {products.map((product) => (
+                {displayedProducts.map((product) => (
                     <ItemCard
                         key={product.id}
                         productId={product.id}
