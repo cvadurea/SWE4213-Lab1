@@ -135,6 +135,7 @@ const Listings = ({ onSelectItem, myListings, searchKeyword }) => {
                         price={product.price}
                         onView={() => onSelectItem(product)}
                         onDelete={myListings ? handleDeleteProduct : undefined}
+                        createdAt={product.created_at}
                     />
                 ))}
 

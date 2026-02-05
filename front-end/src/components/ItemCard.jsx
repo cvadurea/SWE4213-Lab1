@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ItemCard = ({ image, title, price, onView, onDelete, productId }) => {
+const ItemCard = ({ image, title, price, onView, onDelete, productId, createdAt }) => {
     return (
         <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer group flex flex-col h-full relative">
 
@@ -31,6 +31,9 @@ const ItemCard = ({ image, title, price, onView, onDelete, productId }) => {
                 <h3 className="text-white font-medium text-base truncate mb-1">
                     {title}
                 </h3>
+                
+                <p className="text-xs text-slate-400 mb-2">Created at: {new Date(createdAt).toLocaleString()}</p>
+
                 <div className="flex items-center justify-between mt-auto pt-1">
                     <span className="text-lg font-bold text-white">
                         ${price}
