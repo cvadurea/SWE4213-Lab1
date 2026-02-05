@@ -1,33 +1,22 @@
-# SWE4213 - Lab 1 
-This README shows you how to get the project up and running. 
+Name: Gabe Vadureanu
 
-Hint: It is possible that something is missing in this documentation which will throw an error when you try to follow these instructions.
+Student Number: 3721651
 
-**Note:** Don't forget to include your name, student number, and use of AI statement in your README.md.
+Link to Lab1 Repository: https://github.com/cvadurea/SWE4213-Lab1
 
-## Setup DB 
-Shown here are the commands you need to start up your database. 
 
-- **Create Database:** `psql -d postgres -c "CREATE DATABASE unb_marketplace;"`
+AI use statement
 
-- **Create Tables:** `psql -d unb_marketplace -f backend/db.sql` 
 
-- **Connect DB to API:** Update `connection_string` in `seed.js` and `index.js`. 
 
-- **Seed DB:** `cd api; node seed.js`
+The following AI tools we're used:
 
-Note: If running on windows you will have to pass in a user name and password. 
+* ChatGPT
+* Copilot
 
-- **Delete Database:** `psql -d postgres -c "DROP DATABASE unb_marketplace;"`
+AI was used in the following cases:
 
-## Starting Server 
-Open a terminal in vscdoe.
-
-- **Install Dependencies:** `cd api; npm install`
-- **Run Server:** `npm run dev` 
-
-## Starting Front End 
-Open another terminal in vscode. 
-
-- **Install Dependencies:** `cd front-end; npm install`
-- **Run Server:** `npm run dev` 
+* Asked AI for the best way to disable a button within React for Issue 1.
+* Copilot corrected the Issue 7 fix, to use "!!" instead of "!". I later learned this the "!!" is used as double negation, which is needed since the localStorage.getItem() function with one "!" will return a null if there is no token or return the token. The second "!" is needed to convert the output of that into a true or false.
+* Copilot was used to figure out and program Issue 2. The main encountered issue was that I did not know where to define the handleDeleteProduct function and where to add the delete button.
+* Copilot was also used to design the logic and implement Issues 3 and 4.
