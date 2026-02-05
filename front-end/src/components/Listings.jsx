@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import ItemCard from './ItemCard';
 import CreateListingModal from './CreateListingModal'; // Import your component
 
-const Listings = ({ onSelectItem, myListings }) => {
+const Listings = ({ onSelectItem, myListings, searchKeyword }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -62,8 +62,17 @@ const Listings = ({ onSelectItem, myListings }) => {
     const displayedProducts = useMemo(() => {
         if (!products || !products.length) return products;
 
-        const arr = [...products];
+        // Filter by search keyword first (case-insensitive)
+        const kw = (searchKeyword || '').trim().toLowerCase();
+        let arr = kw
+            ? products.filter((p) => {
+                  const title = (p.title || '').toLowerCase();
+                  const desc = (p.description || '').toLowerCase();
+                  return title.includes(kw) || desc.includes(kw);
+              })
+            : [...products];
 
+        // Then sort based on selected option
         switch (sortOption) {
             case 'price-asc':
                 return arr.sort((a, b) => (Number(a.price) || 0) - (Number(b.price) || 0));
@@ -84,7 +93,7 @@ const Listings = ({ onSelectItem, myListings }) => {
             default:
                 return arr;
         }
-    }, [products, sortOption]);
+    }, [products, sortOption, searchKeyword]);
 
     useEffect(() => {
         fetchProducts();

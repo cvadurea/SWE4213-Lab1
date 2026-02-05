@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-const Header = ({ onLogout, setMyListings }) => {
+const Header = ({ onLogout, setMyListings, setSearchKeyword }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
     return (
         <header className="w-full bg-slate-900 text-gray-300 border-b border-slate-800 sticky top-0 z-50">
             <div className="w-full px-[20px] sm:px-[50px] py-4 flex items-center justify-between">
@@ -19,6 +18,7 @@ const Header = ({ onLogout, setMyListings }) => {
                         <input
                             type="text"
                             placeholder="Search items..."
+                            onChange={(e) => setSearchKeyword?.(e.target.value)}
                             className="w-full bg-slate-800 border border-slate-700 focus:border-red-700 rounded-lg py-2 px-4 pl-10 text-sm text-white focus:outline-none transition-all"
                         />
                         <div className="absolute left-3 top-2.5 text-gray-500">
